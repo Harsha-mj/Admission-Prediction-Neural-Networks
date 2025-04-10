@@ -43,7 +43,3 @@ if submitted:
     # Display prediction
     st.subheader("🎓 Admission Probability:")
     st.success(f"🎯 Probability of Admission: {predicted_admission_prob * 100:.2f}%")
-
-# Feature importance (optional, if available)
-st.write("Feature Importance of the model:")
-st.image("feature_importance.png", caption="Feature importance visualization", use_column_width=True)
