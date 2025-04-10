@@ -1,16 +1,15 @@
 import streamlit as st
 import numpy as np
 import joblib
-
-# Set the page title
-st.title("🎓 UCLA Admission Predictor")
-st.write("""
-This app predicts the likelihood of being admitted to UCLA based on various features such as GRE Score, TOEFL Score, SOP, LOR, CGPA, and more.
-""")
+import pandas as pd
 
 # Load the pre-trained model and scaler
 model = joblib.load("model.pkl")
 scaler = joblib.load("scaler.pkl")
+
+# Set the page title
+st.title("🎓 UCLA Admission Predictor")
+st.write("""This app predicts the likelihood of being admitted to UCLA based on various features.""")
 
 # Form for user input
 with st.form("admission_details"):
@@ -30,9 +29,25 @@ with st.form("admission_details"):
 
 if submitted:
     # Prepare input data
-    input_data = np.array([
-        gre_score, toefl_score, university_rating, sop, lor, cgpa, research
-    ]).reshape(1, -1)
+    input_data = pd.DataFrame({
+        'GRE_Score': [gre_score],
+        'TOEFL_Score': [toefl_score],
+        'University_Rating': [university_rating],
+        'SOP': [sop],
+        'LOR': [lor],
+        'CGPA': [cgpa],
+        'Research': [research]
+    })
+
+    # Handle categorical variables and apply one-hot encoding
+    input_data = pd.get_dummies(input_data, columns=['University_Rating', 'Research'], dtype=int)
+
+    # Make sure the input data has the same columns as the model's training data
+    # Add any missing columns (if user selects a value not in training data)
+    for col in model.feature_names_in_:
+        if col not in input_data.columns:
+            input_data[col] = 0
+    input_data = input_data[model.feature_names_in_]
 
     # Scale the input data
     input_scaled = scaler.transform(input_data)
