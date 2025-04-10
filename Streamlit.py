@@ -43,3 +43,6 @@ if submitted:
     # Display prediction
     st.subheader("🎓 Admission Probability:")
     st.success(f"🎯 Probability of Admission: {predicted_admission_prob * 100:.2f}%")
+
+st.write("Loss Curve of the model:")
+st.image("loss_curve.png", caption="Loss Curve", use_column_width=True)
