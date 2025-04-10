@@ -1,11 +1,14 @@
-import streamlit as st
-import numpy as np
-import joblib
+import pickle
 import pandas as pd
+import numpy as np
+import streamlit as st
+import joblib
 
-# Load the pre-trained model and scaler
+# Load the pre-trained model, scaler, and feature names
 model = joblib.load("model.pkl")
 scaler = joblib.load("scaler.pkl")
+with open('feature_names.pkl', 'rb') as f:
+    feature_names = pickle.load(f)
 
 # Set the page title
 st.title("🎓 UCLA Admission Predictor")
@@ -42,12 +45,8 @@ if submitted:
     # Handle categorical variables and apply one-hot encoding
     input_data = pd.get_dummies(input_data, columns=['University_Rating', 'Research'], dtype=int)
 
-    # Make sure the input data has the same columns as the model's training data
-    # Add any missing columns (if user selects a value not in training data)
-    for col in model.feature_names_in_:
-        if col not in input_data.columns:
-            input_data[col] = 0
-    input_data = input_data[model.feature_names_in_]
+    # Ensure the input data has the same columns as the model's training data
+    input_data = input_data.reindex(columns=feature_names, fill_value=0)
 
     # Scale the input data
     input_scaled = scaler.transform(input_data)
