@@ -24,7 +24,7 @@ def preprocess_and_split(data):
     scaler = MinMaxScaler()
     xtrain_scaled = scaler.fit_transform(xtrain)
     xtest_scaled = scaler.transform(xtest)
-    return xtrain_scaled, xtest_scaled, ytrain, ytest, scaler
+    return xtrain_scaled, xtest_scaled, ytrain, ytest, scaler, X.columns.tolist()  # Return columns
 
 def train_model(xtrain_scaled, ytrain):
     model = MLPClassifier(hidden_layer_sizes=(15, 15), max_iter=300, batch_size=50, random_state=42)
@@ -37,23 +37,24 @@ def evaluate_model(model, xtest_scaled, ytest):
     logging.info(f"Model Accuracy: {accuracy:.2f}")
     return accuracy
 
-def save_model(model, scaler, model_filename='model.pkl', scaler_filename='scaler.pkl'):
+def save_model(model, scaler, columns, model_filename='model.pkl', scaler_filename='scaler.pkl', columns_filename='columns.pkl'):
     with open(model_filename, 'wb') as model_file:
         pickle.dump(model, model_file)
     with open(scaler_filename, 'wb') as scaler_file:
         pickle.dump(scaler, scaler_file)
-    logging.info(f"Model and scaler saved to {model_filename} and {scaler_filename}")
+    with open(columns_filename, 'wb') as columns_file:
+        pickle.dump(columns, columns_file)
+    logging.info(f"Model, scaler, and column names saved to {model_filename}, {scaler_filename}, and {columns_filename}")
 
 def main():
     data = load_data('Admission.csv')
-    xtrain_scaled, xtest_scaled, ytrain, ytest, scaler = preprocess_and_split(data)
-    
+    xtrain_scaled, xtest_scaled, ytrain, ytest, scaler, columns = preprocess_and_split(data)
+
     model = train_model(xtrain_scaled, ytrain)
-    
     accuracy = evaluate_model(model, xtest_scaled, ytest)
-    
+
     if accuracy >= 0.85:
-        save_model(model, scaler)
+        save_model(model, scaler, columns)
     else:
         logging.warning(f"Accuracy too low: {accuracy:.2f}. Model not saved.")
 
