@@ -55,7 +55,7 @@ if st.button("Predict Admission"):
     input_encoded = one_hot_encode_user_input(input_data, required_columns)
     input_scaled = scaler.transform(input_encoded)
     prediction = model.predict(input_scaled)[0]
-    result = "✅ Likely to be Admitted!" if prediction == 1 else "❌ Unlikely to be Admitted"
+    result = "✅ Likely to be Admitted!" if prediction > 0.80 else "❌ Unlikely to be Admitted"
     st.subheader(result)
     
 st.write("Loss Curve of the model:")
