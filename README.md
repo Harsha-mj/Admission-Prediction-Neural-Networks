@@ -33,7 +33,7 @@ The application is trained on the **Admission Prediction dataset**. This dataset
 - **Matplotlib** and **Seaborn**: For exploratory data analysis and visualization (if applicable).
 
 ## Model
-The predictive model is trained using the **Admission Prediction dataset**. It applies preprocessing steps such as encoding categorical variables and scaling numerical features. The classification model used may include algorithms such as Logistic Regression, Random Forest, or XGBoost.
+The predictive model is trained using the **Admission Prediction dataset**. It applies preprocessing steps such as encoding categorical variables and scaling numerical features. The classification model used include Neural Network.
 
 ## Future Enhancements
 - Adding support for more datasets.
