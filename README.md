@@ -2,9 +2,7 @@
 
 This app has been built using **Streamlit** and deployed with **Streamlit Community Cloud**.
 
-Visit the app here: [Link to your app]
-
-Password: `streamlit`
+Visit the app here: [https://admission-prediction-neural-networks-9n89gns8ykuuirqgqigyqv.streamlit.app/]
 
 This application predicts whether a student is likely to be admitted to a university based on inputs such as GPA, university rating, research experience, and other relevant factors. The model aims to help users assess the chances of admission based on historical data.
 
